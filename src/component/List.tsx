@@ -54,7 +54,7 @@ function List() {
                                 )}
                             </Draggable>
                         )) :completed === 'active' ? items.map((v,i)=>(
-                          !v.done && <Draggable key={v.id}  draggableId={v.id.toString()} index={i}>                                            
+                          v.done=== false && <Draggable key={v.id}  draggableId={v.id.toString()} index={i}>                                            
                             {(provided)=>(
                                     <li ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}  className={` border-[#e4e5f1] dark:bg-dark-theme-very-dark-desaturated-blue bg-light-theme-very-light-gray dark:border-dark-theme-very-dark-grayish-blue-two group border-b-[.001rem] z-[10]`} >
                                     <div className="flex group items-center px-[1.1rem] py-[.9rem]">
@@ -77,7 +77,7 @@ function List() {
                                 )}
                             </Draggable>
                         )): completed === 'completed' && items.map((v,i)=>(
-                            v.done && <Draggable key={v.id}  draggableId={v.id.toString()} index={i}>                                            
+                            v.done === true && <Draggable key={v.id}  draggableId={v.id.toString()} index={i}>                                            
                             {(provided)=>(
                                     <li ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}  className={` border-[#e4e5f1] dark:bg-dark-theme-very-dark-desaturated-blue bg-light-theme-very-light-gray dark:border-dark-theme-very-dark-grayish-blue-two group border-b-[.001rem] z-[10]`} >
                                     <div className="flex group items-center px-[1.1rem] py-[.9rem]">
