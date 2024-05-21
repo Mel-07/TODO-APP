@@ -1,4 +1,4 @@
-import { Action, State } from "../type/type";
+import { Action, Item, State } from "../type/type";
 
 
 export function reducer (state:State,action:Action):State{
@@ -23,47 +23,80 @@ switch (action.type) {
         break;
     case "check":
     if(state.items[action.tick]){
-        return {
-            ...state,items:state.items.map((v)=>{
-                if(state.items[action.tick]=== v){
-                    return{
-                        ...v,done:!v.done
-                    }
+        const updatedItems = state.items.map((v)=>{
+            if(state.items[action.tick]=== v){
+                return{
+                    ...v,done:!v.done
                 }
-                return v
-            })
+            }
+            return v
+        })
+
+        localStorage.setItem('items', JSON.stringify(updatedItems))
+        return {
+            ...state,items:updatedItems,
+            allItems:updatedItems
         }
     }
         break;
 
-    case "new todo":
+    case "new todo":{
+        const newItems = [...state.allItems, action.item];
+        localStorage.setItem('items', JSON.stringify(newItems));
         return {
-                ...state,items:[...state.items,action.item]
+                ...state,items:newItems
             }
-    case 'filter':
-        return{
-                ...state,completed:action.completed
-            } 
-    case 'delete':
-        return{
-            ...state,items:state.items.filter((v,i)=>{
-                if(i !== action.index){
-                    return{
-                        ...v
-                    }
+    }
+            case 'filter': {
+                const { completed } = action;
+                console.log(completed);
+            
+                let filteredItems;
+                
+                if (completed === 'all') {
+                    filteredItems = state.allItems;
+                } else if (completed === 'active') {
+                    console.log(localStorage.items)
+                    filteredItems = state.allItems.filter((v:Item) => !v.done);
+                } else if (completed === 'completed') {
+                    filteredItems =state.allItems.filter((v:Item) => v.done);
+                } else {
+                    return state;
                 }
-            })
+            
+                return {
+                    ...state,
+                    items:  filteredItems,
+                };
+            }
+            
+    case 'delete':{
+        const deletedItems = state.allItems.filter((v,i)=>{
+            if(i !== action.index){
+                return{
+                    ...v
+                }
+            }
+        })
+        localStorage.setItem('items',JSON.stringify(deletedItems))
+        return{
+            ...state,items:deletedItems,
+            allItems:deletedItems
         }
+    }
 
-    case 'clear':
-    return{
-        ...state,items:state.items.filter((v)=>{
+    case 'clear':{
+        const clearedState = state.allItems.filter((v)=>{
             if(!v.done){
                 return{
                     ...v
                 }
             }
         })
+        localStorage.setItem('items',JSON.stringify(clearedState))
+    return{
+        ...state,items:clearedState
+    }
     }
     
     case 'drag-end':{
@@ -74,7 +107,7 @@ switch (action.type) {
         items.splice(destination.index,0,movedItem)
         localStorage.setItem('items',JSON.stringify(items))
         {
-            return {...state,items:JSON.parse(localStorage.getItem('items')!)|| items}
+            return {...state,items:items}
         }
     }
 

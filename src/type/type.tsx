@@ -12,7 +12,7 @@ export type Items<T> = T[]
 export type State = {
     themes:string,
     items:Items<Item>,
-    completed:string,
+    allItems:Items<Item>,
 }
 export type Action =
 {

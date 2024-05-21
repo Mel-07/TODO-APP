@@ -3,10 +3,10 @@ import type { AppContext, State, Props } from '../type/type';
 import { items } from './data';
 import { reducer } from './reducer';
 
-export const initialState: State = {
-  themes: typeof localStorage.getItem('themes') === 'string' ? localStorage.themes: 'dark'  ,
-  items: localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')!) : items, 
-  completed:'all'
+export const initialState:State = {
+  themes: localStorage.getItem('themes') || 'dark',
+  items: localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')!) : items,
+  allItems: localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')!) : items,
 };
 
 export const Context = createContext<AppContext>({
@@ -16,7 +16,7 @@ export const Context = createContext<AppContext>({
 
 export function ContextProvider({ children }: Props) {
 
-  const [{ items,completed,themes }, dispatch] = useReducer( reducer
+  const [{ items,themes,allItems }, dispatch] = useReducer( reducer
 , initialState);
 
   useEffect(() => {
@@ -31,8 +31,8 @@ export function ContextProvider({ children }: Props) {
   return (
     <Context.Provider value={{
       items,
+      allItems,
       themes,
-      completed,
       dispatch,
     }}>
       {children}
