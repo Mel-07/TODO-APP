@@ -95,7 +95,8 @@ switch (action.type) {
         })
         localStorage.setItem('items',JSON.stringify(clearedState))
     return{
-        ...state,items:clearedState
+        ...state,items:clearedState,
+        allItems:clearedState
     }
     }
     
