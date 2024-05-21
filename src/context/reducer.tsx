@@ -70,7 +70,7 @@ switch (action.type) {
     case 'drag-end':{
         const {destination,source} = action.result
         if(!destination) return state
-        const items = Array.from(state.items)
+        const items = [...state.items]
         const [movedItem] = items.splice(source.index,1)
         items.splice(destination.index,0,movedItem)
         localStorage.setItem('items',JSON.stringify(items))
