@@ -40,7 +40,6 @@ switch (action.type) {
         return {
                 ...state,items:[...state.items,action.item]
             }
-        break;
     case 'filter':
         return{
                 ...state,completed:action.completed
