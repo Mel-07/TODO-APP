@@ -44,7 +44,7 @@ switch (action.type) {
         const newItems = [...state.allItems, action.item];
         localStorage.setItem('items', JSON.stringify(newItems));
         return {
-                ...state,items:newItems
+                ...state,items:newItems,allItems:newItems
             }
     }
             case 'filter': {
